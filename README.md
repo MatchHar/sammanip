@@ -15,7 +15,7 @@ Private-deployment-oriented IP and network privacy toolbox.
 
 ## Deploy
 
-Create `.env` from `.env.example`, set `ALLOWED_DOMAINS` to your deployed hostname, and provide MaxMind credentials if geolocation is required.
+Create `.env` from `.env.example`, set `ALLOWED_DOMAINS` to your deployed hostname and `VITE_SITE_URL` to its public HTTPS origin, and provide MaxMind credentials if geolocation is required.
 
 ```bash
 docker compose up -d --build

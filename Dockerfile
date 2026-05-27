@@ -1,6 +1,8 @@
 # Build stage
 FROM node:24-alpine AS build-stage
 WORKDIR /app
+ARG VITE_SITE_URL=""
+ENV VITE_SITE_URL=$VITE_SITE_URL
 COPY package*.json ./
 RUN npm install
 COPY . .

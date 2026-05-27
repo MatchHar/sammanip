@@ -3,7 +3,10 @@ version: '3'
 services:
     sammanip:
         container_name: sammanip
-        build: .
+        build:
+            context: .
+            args:
+                VITE_SITE_URL: ${VITE_SITE_URL:-}
         image: matchhar/sammanip:local
         stdin_open: true # docker run -i interactive mode
         tty: true        # docker run -t terminal mode

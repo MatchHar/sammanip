@@ -16,7 +16,7 @@
           class="inline-flex items-center gap-1.5 rounded-md px-1 py-1 text-lg font-semibold text-foreground no-underline hover:opacity-80 transition-opacity">
           <Brand class="size-7 shrink-0" />
           <span class="tracking-tight truncate">
-            <span class="font-bold">SamMan IP</span><span class="font-extralight"
+            <span class="font-bold">SamMan IP</span><span class="ml-1 font-extralight"
               :class="{ 'jn-shimmer-light': !loaded && !isDarkMode, 'jn-shimmer-dark': !loaded && isDarkMode }"> Toolbox</span>
           </span>
         </a>

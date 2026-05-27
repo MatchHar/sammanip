@@ -1,0 +1,61 @@
+import { createRouter, createWebHashHistory } from 'vue-router';
+import { useMainStore } from '@/store';
+
+// Lazy loading of route components
+const MTRTest = () => import('../components/advanced-tools/MtrTest.vue');
+const PingTest = () => import('../components/advanced-tools/GlobalLatencyTest.vue');
+const DNSResolver = () => import('../components/advanced-tools/DnsResolver.vue');
+const CensorshipCheck = () => import('../components/advanced-tools/CensorshipCheck.vue');
+const Whois = () => import('../components/advanced-tools/Whois.vue');
+const MacChecker = () => import('../components/advanced-tools/MacChecker.vue');
+const BrowserInfo = () => import('../components/advanced-tools/BrowserInfo.vue');
+const Checklist = () => import('../components/advanced-tools/SecurityChecklist.vue');
+const EmptyComponent = () => import('../components/advanced-tools/Empty.vue');
+
+const routes = [
+  { path: '/', component: EmptyComponent },
+  { path: '/pingtest', component: PingTest },
+  { path: '/mtrtest', component: MTRTest },
+  { path: '/dnsresolver', component: DNSResolver },
+  { path: '/censorshipcheck', component: CensorshipCheck },
+  { path: '/whois', component: Whois },
+  { path: '/macchecker', component: MacChecker },
+  { path: '/browserinfo', component: BrowserInfo },
+  { path: '/securitychecklist', component: Checklist },
+];
+
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes,
+});
+
+const setOpenedCard = (currentPath) => {
+  for (let i = 0; i < routes.length; i++) {
+    if (currentPath === routes[i].path) {
+      return i - 1;
+    }
+  }
+};
+
+router.afterEach((to) => {
+  const store = useMainStore();
+
+
+  if (!routes.find(route => route.path === to.path)) {
+    if (store.openSheet === 'tools') {
+      store.setOpenSheet(null);
+    }
+    return;
+  }
+
+  store.setCurrentPath(to.path, setOpenedCard(to.path));
+
+  if (to.path !== '/') {
+    store.setOpenSheet('tools');
+  } else if (store.openSheet === 'tools') {
+    store.setOpenSheet(null);
+  }
+});
+
+
+export default router;

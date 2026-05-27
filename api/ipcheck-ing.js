@@ -1,0 +1,35 @@
+import { fetchUpstream } from '../common/fetch-with-timeout.js';
+import { getPrivateUpstreamHeaders } from '../common/upstream-headers.js';
+import logger from '../common/logger.js';
+
+export default async (req, res) => {
+    // IP presence + validity guaranteed by requireValidIP middleware.
+    const ipAddress = req.query.ip;
+
+    const key = process.env.IPCHECKING_API_KEY;
+
+    if (!key) {
+        return res.status(500).json({ error: 'API key is missing' });
+    }
+
+    // Build request
+    const lang = req.query.lang || 'en';
+    const apiEndpoint = process.env.IPCHECKING_API_ENDPOINT;
+    const url = new URL(`${apiEndpoint}/ipinfo?key=${key}&ip=${ipAddress}&lang=${lang}`);
+
+    try {
+        const apiResponse = await fetchUpstream(url, {
+            headers: getPrivateUpstreamHeaders(req.headers),
+        });
+
+        if (!apiResponse.ok) {
+            throw new Error(`API responded with status: ${apiResponse.status}`);
+        }
+
+        const data = await apiResponse.json();
+        res.json(data);
+    } catch (error) {
+        logger.error({ err: error, ip: ipAddress, lang }, 'ipcheck-ing handler failed');
+        res.status(500).json({ error: error.message });
+    }
+}

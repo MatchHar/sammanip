@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="keywords"
+    content="SamMan IP Toolbox, IP tool, IP check, IP Leak Check, IP quality check, IP lookup, DNS leak test, WebRTC leak test, browser fingerprint check, speed test, global latency test, MTR test, DNS lookup, Whois search" />
+  <meta name="description"
+    content="A better and open-source IP toolbox: check your IP address & geolocation, test IP for WebRTC and DNS IP leaks, run an IP quality check, browser fingerprint check, plus speed test, global latency test, MTR test, Whois search, and more.">
+  <meta name="robots" content="index, follow" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#f8f9fa" />
+  <meta name="background-color" content="#ffffff" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <!-- Avoid auto-linking phone numbers -->
+  <meta name="format-detection" content="telephone=no" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <title>SamMan IP Toolbox - Address, Geolocation and Network Privacy Checks</title>
+
+  <!-- @site-url:open -->
+  <link rel="canonical" href="__SITE_URL__/" />
+  <meta property="og:url" content="__SITE_URL__/" />
+  <!-- @site-url:close -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SamMan IP Toolbox" />
+  <meta property="og:title" content="SamMan IP Toolbox - Network Privacy Checks" />
+  <meta property="og:description"
+    content="IP lookup, ASN history, connectivity tests, WebRTC and DNS leak detection, speed test, MTR, Whois, and browser fingerprint — in one open-source web app." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SamMan IP Toolbox - Network Privacy Checks" />
+  <meta name="twitter:description"
+    content="IP lookup, ASN history, connectivity tests, WebRTC and DNS leak detection, speed test, MTR, Whois, and browser fingerprint — in one open-source web app." />
+
+  <!-- WebSite JSON-LD: helps Google and AI engines recognize the site as a single entity instead of a loose collection of pages. -->
+  <!-- @site-url:open -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "__SITE_URL__/#website",
+    "name": "SamMan IP Toolbox",
+    "url": "__SITE_URL__/",
+    "description": "Open-source IP toolbox: lookup, connectivity tests, WebRTC and DNS leak detection, speed test, MTR, Whois, and browser fingerprint.",
+    "inLanguage": ["en", "zh", "fr", "tr"]
+  }
+  </script>
+  <!-- @site-url:close -->
+
+  <!-- Seed the `.dark` class on <html> BEFORE first paint.
+      Reads the user's stored theme preference from localStorage (key
+      `userPreferences`, field `theme`, values: "auto" / "light" / "dark"),
+      falling back to the OS `prefers-color-scheme` when on "auto" or when
+      there's no stored preference yet. Runs synchronously — must come before
+      the inline <style> block below and before the Vue bundle loads, so the
+      boot screen and the eventually-mounted app agree on the theme from
+      frame 1. Preferences.vue owns the class after mount via
+      `store.setDarkMode`. -->
+  <script>
+    (function () {
+      // Gates the initial-hidden `#app` rule; App.vue clears it for the
+      // scale/fade-in. If this script never runs, #app renders normally.
+      document.documentElement.setAttribute('data-booting', '');
+      try {
+        var stored = JSON.parse(localStorage.getItem('userPreferences') || '{}');
+        var theme = stored.theme || 'auto';
+        var isDark =
+          theme === 'dark' ||
+          (theme === 'auto' &&
+            window.matchMedia &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (isDark) document.documentElement.classList.add('dark');
+      } catch (e) {
+        /* localStorage / JSON parse disabled — fall through, defaults to light. */
+      }
+    })();
+  </script>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      line-height: 1.5;
+      -webkit-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: transparent;
+      tab-size: 4;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji";
+      scrollbar-gutter: stable;
+      background: #ffffff;
+      color: #0a0a0a;
+    }
+
+    /* Dark mode is gated strictly on the `.dark` class — *never* on
+       `prefers-color-scheme` alone — so this inline CSS never fights with
+       Tailwind's dark variant or with Preferences.vue's explicit light/dark
+       selection. The `.dark` class is seeded by the script block below
+       before first paint, so boot-screen rendering already reflects the
+       right theme without a flash. */
+    html.dark {
+      background: #0a0a0a;
+      color: #fafafa;
+    }
+
+    /* Boot screen — shown until App.vue runs the hand-off sequence.
+       Fixed overlay (not an in-flow 100vh block) so mobile chrome doesn't
+       push it into a scroll, and so Vue can mount into `#app` underneath
+       while the overlay is still visible.
+       25vh top padding anchors the logo to the upper third so phone
+       notches / status bars don't visually push it low. */
+    .jn-loading {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 16px;
+      padding: 25vh 24px 24px;
+      text-align: center;
+      background: #ffffff;
+    }
+
+    html.dark .jn-loading {
+      background: #0a0a0a;
+    }
+
+    /* Hand-off, driven from App.vue:
+         stage-1 — non-logo children fade out, logo stays put.
+         stage-2 — logo scales down to 0 and fades.
+         stage-3 — overlay removed, `#app` runs `.jn-app-enter` below. */
+    .jn-loading>svg,
+    .jn-loading>div,
+    .jn-loading>.jn-spinner,
+    .jn-loading>p {
+      transition: opacity 180ms ease-out,
+        transform 220ms cubic-bezier(0.55, 0, 0.7, 0);
+      transform-origin: center center;
+    }
+
+    .jn-loading.jn-loading-stage-1> :not(svg) {
+      opacity: 0;
+    }
+
+    .jn-loading.jn-loading-stage-2>svg {
+      opacity: 0;
+      transform: scale(0);
+    }
+
+    .jn-loading svg {
+      width: 96px;
+      height: 96px;
+      fill: currentColor;
+    }
+
+    .jn-loading p {
+      margin: 0;
+      font-size: 14px;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+
+    .jn-loading a {
+      color: inherit;
+      text-decoration: underline;
+    }
+
+    /* Spinner — explicitly border-box so its rendered size stays 28×28 whether
+       Preflight has arrived or not. */
+    .jn-spinner {
+      width: 28px;
+      height: 28px;
+      border: 4px solid #16a34a;
+      border-left-color: transparent;
+      border-radius: 50%;
+      animation: jn-spin 1s linear infinite;
+    }
+
+    @keyframes jn-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* `#app` starts hidden + shrunk; App.vue flips `.jn-app-enter` to
+       hand off from the collapsing logo. Gated on `html[data-booting]` so
+       a missing inline script doesn't strand the user on a blank screen. */
+    html[data-booting] #app {
+      opacity: 0;
+      transform: scale(0.94);
+    }
+
+    #app {
+      transform-origin: center center;
+      transition: opacity 320ms ease-out, transform 320ms ease-out;
+    }
+
+    #app.jn-app-enter {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
+
+  <!-- Pre-Vue runtime:
+      1. Stash the PWA install-prompt event so the app can reuse it later
+        (the event fires exactly once, well before Vue mounts).
+      2. After 12s, reveal the slow-network fallback hint. -->
+  <script>
+    window.sammanInstallPromptEvent = null;
+    window.addEventListener('beforeinstallprompt', (event) => {
+      event.preventDefault();
+      window.sammanInstallPromptEvent = event;
+    });
+    setTimeout(() => {
+      const hint = document.getElementById('jn-loading-slow-hint');
+      if (hint) hint.hidden = false;
+    }, 12000);
+  </script>
+</head>
+
+<body>
+  <!-- Pre-Vue boot screen. App.vue drives the hand-off via `#jn-loading` —
+      the id is a load-bearing contract, keep it in sync. -->
+  <div id="jn-loading" class="jn-loading" role="status" aria-live="polite">
+    <div>
+      <p>It may take a while for the first time</p>
+      <p>Please wait&hellip;</p>
+    </div>
+
+    <div class="jn-spinner" aria-label="Loading"></div>
+
+    <p id="jn-loading-slow-hint" hidden>Waiting too long? Refresh the page.</p>
+  </div>
+
+  <noscript>
+    <p style="padding: 40px; text-align: center;">
+      SamMan IP Toolbox requires JavaScript. Please enable it and refresh.
+    </p>
+  </noscript>
+
+  <!-- Vue mounts here. `vaul-drawer-wrapper` is the marker vaul-vue uses to scale
+      the page background when a bottom drawer is open (Advanced Tools panel). -->
+  <div id="app" vaul-drawer-wrapper></div>
+  <script type="module" src="/frontend/main.js"></script>
+</body>
+
+</html>

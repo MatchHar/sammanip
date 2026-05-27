@@ -1,5 +1,9 @@
 # SamMan IP Toolbox
 
+<p align="center">
+  <img src="public/branding/samman-logo-192.png" alt="SamMan IP Toolbox logo" width="96">
+</p>
+
 Private-deployment-oriented IP and network privacy toolbox.
 
 ## Security Defaults

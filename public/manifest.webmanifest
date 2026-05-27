@@ -2,11 +2,25 @@
   "name": "SamMan IP Toolbox",
   "short_name": "SamMan IP",
   "description": "All in one SamMan IP Toolbox",
-  "id": "app.iptoolbox",
+  "id": "app.sammanip",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "theme_color": "#f8f9fa",
   "background_color": "#ffffff",
-  "orientation": "portrait"
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/branding/samman-logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/branding/samman-logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
 }

@@ -161,6 +161,11 @@ const MAX_CUSTOM_TARGETS = 9;
 const connectivityTests = reactive([
   { id: 'wechat', name: 'WeChat', icon: MessageCircle, url: 'https://res.wx.qq.com/a/wx_fed/assets/res/NTI4MWU5.ico', status: t('connectivity.StatusWait'), time: 0, mintime: 0, roundResults: [] },
   { id: 'taobao', name: 'Taobao', icon: Store, url: 'https://www.taobao.com/favicon.ico', status: t('connectivity.StatusWait'), time: 0, mintime: 0, roundResults: [] },
+  { id: 'baidu', name: 'Baidu', icon: Compass, url: 'https://www.baidu.com/favicon.ico', status: t('connectivity.StatusWait'), time: 0, mintime: 0, roundResults: [] },
+  { id: 'aliyun', name: 'Aliyun', icon: Cloud, url: 'https://www.aliyun.com/favicon.ico', status: t('connectivity.StatusWait'), time: 0, mintime: 0, roundResults: [] },
+  { id: 'tencent-cloud', name: 'Tencent Cloud', icon: Cloud, url: 'https://cloud.tencent.com/favicon.ico', status: t('connectivity.StatusWait'), time: 0, mintime: 0, roundResults: [] },
+  { id: 'jd', name: 'JD.com', icon: Store, url: 'https://www.jd.com/favicon.ico', status: t('connectivity.StatusWait'), time: 0, mintime: 0, roundResults: [] },
+  { id: 'bilibili', name: 'Bilibili', icon: Youtube, url: 'https://www.bilibili.com/favicon.ico', status: t('connectivity.StatusWait'), time: 0, mintime: 0, roundResults: [] },
   { id: 'google', name: 'Google', icon: Chrome, url: 'https://www.google.com/favicon.ico', status: t('connectivity.StatusWait'), time: 0, mintime: 0, roundResults: [] },
   { id: 'cloudflare', name: 'Cloudflare', icon: Cloud, url: 'https://www.cloudflare.com/favicon.ico', status: t('connectivity.StatusWait'), time: 0, mintime: 0, roundResults: [] },
   { id: 'youtube', name: 'YouTube', icon: Youtube, url: 'https://www.youtube.com/favicon.ico', status: t('connectivity.StatusWait'), time: 0, mintime: 0, roundResults: [] },
